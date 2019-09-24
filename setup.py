@@ -47,14 +47,12 @@ class CMakeBuild(build_ext):
                       '-DSPCONV_BuildTests=OFF',
                       ] #  -arch=sm_61
         # force CUDA build
-        cmake_args += ['-DSPCONV_BuildCUDA=OFF']
-        else:
-            cuda_flags = ["\"--expt-relaxed-constexpr\""]
-            # must add following flags to use at::Half
-            # but will remove raw half operators.
-            cuda_flags += ["-D__CUDA_NO_HALF_OPERATORS__", "-D__CUDA_NO_HALF_CONVERSIONS__"]
-            cuda_flags += ["-D__CUDA_NO_HALF2_OPERATORS__"] 
-            cmake_args += ['-DCMAKE_CUDA_FLAGS=' + " ".join(cuda_flags)]
+        cuda_flags = ["\"--expt-relaxed-constexpr\""]
+        # must add following flags to use at::Half
+        # but will remove raw half operators.
+        cuda_flags += ["-D__CUDA_NO_HALF_OPERATORS__", "-D__CUDA_NO_HALF_CONVERSIONS__"]
+        cuda_flags += ["-D__CUDA_NO_HALF2_OPERATORS__"] 
+        cmake_args += ['-DCMAKE_CUDA_FLAGS=' + " ".join(cuda_flags)]
         cfg = 'Debug' if self.debug else 'Release'
         assert cfg == "Release", "pytorch ops don't support debug build."
         build_args = ['--config', cfg]
